@@ -1,0 +1,68 @@
+1. Concept
+  Khái niệm:
+    Tic-tac-toe là một trò chơi phổ biến dùng viết trên bàn cờ giấy có chín ô, 3x3. Người thắng là người thể tạo được đầu tiên một dãy X hoặc O theo bất cứ hướng ngang dọc hay chéo.
+  Luật chơi
+    Mỗi lượt đi, người chơi dùng X/O lần lượt điền ký hiệu của mình vào các ô còn trống. 
+2. Design
+A. AI engine
+  Thể hiện thế cờ: vector<vector<int>> (3x3)
+    X là 1, O là -1, ô trống là 0
+  Kiểm tra xem thế cờ đã kết thúc chưa:
+    Input: thế cờ
+    Output: True/False
+    Kiểm tra xem hàng, cột, đường chéo có 3 X/O cùng nhau chưa → có thì trả True
+    Kiểm tra xem cả bàn cờ đều kín chưa → có thì trả True
+    Nếu không trả False
+  Tìm người thắng cuộc/hòa (với thế cờ kết thúc):
+    Input: thế cờ kết thúc
+    Output: 1 (X thắng), 0 (hòa), -1 (O thắng) 
+    Kiểm tra hàng cột đường chéo có 3 X/O cùng nhau chưa. Nếu có, thì X/O thắng → trả 1/-1 (nếu X thắng trả 1, O thắng trả -1)
+    Nếu không thì hòa (vì thế cờ kết thúc + không có 3 X/O trên 1 hàng/cột/đường chéo thì sẽ là hòa) → trả 0 
+  Kiểm tra nước đi hợp lệ (với người chơi là người nhập vào):
+    Input: nước đi mới của người chơi
+    Output: True/False
+    Kiểm tra người chơi hiện tại:
+      Quy ước X luôn đi trước
+      Nếu số X trên bàn cờ > số O trên bàn cờ → lượt O
+      Nếu số X trên bàn cờ = số O trên bàn cờ → lượt X
+    Nếu người chơi hiện tại == người chơi thực → tiếp tục
+    Kiểm tra xem nước đi có hợp lệ không (có điền vào ô đã được điền hay không) → nếu không thì thông báo
+  Tính điểm của thế cờ:
+    Input: thế cờ + người chơi hiện tại
+    Output: điểm của chúng (int)
+    Kiểm tra người chơi hiện tại
+    Điểm của thế cờ kết thúc: 
+      1 nếu X thắng, 0 nếu hòa, -1 nếu O thắng
+    Điểm của thế cờ không phải kết thúc:
+      Xét điểm của các thế cờ sau khi đi nước đi tiếp theo. Điểm của thế cờ hiện tại sẽ là điểm cao nhất của các thế cờ kế tiếp. (thuật toán minimax)
+        Thuật toán lấy toàn bộ thế cờ kế tiếp
+        Tính điểm toàn bộ thế cờ trong đống vừa lấy ra
+        Tìm xem trong đó thế cờ nào có điểm thấp nhất (với O) hoặc cao nhất (với X)
+   Tìm nước đi tốt nhất:
+      Input: thế cờ + người chơi hiện tại
+      Output: thế cờ tiếp theo tốt nhất
+      Lấy toàn bộ thế cờ tiếp theo
+      Tính điểm các thế cờ tiếp theo đó
+      Lấy thế cờ có điểm cao nhất/thấp nhất tùy X/O
+B. User interface
+  Hỏi xem người chơi muốn chơi X hay O khi bắt đầu
+  (1,1) là ô trên cùng bên trái
+  Nếu người chơi đi sai luật thì báo lỗi
+  Nếu trò chơi kết thúc thì thông báo kết quả
+  In thế cờ hiện tại
+  In nước đi của máy
+
+3. Implementation
+  
+4. Operation
+Thử với người chơi X, máy O:
+  X đi 1,1
+  O đi 2,2
+  X đi 1,2
+  O đi 1,3
+  X đi 3,1
+  O đi 2,1
+  X đi 2,3
+  O đi 2,2
+  X đi 3,3
+  => hòa
